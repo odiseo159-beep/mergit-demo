@@ -1,0 +1,11 @@
+{
+  "name": "mergit-demo",
+  "version": "1.0.0",
+  "description": "Sample repository verified by the Mergit agent",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "private": true
+}
