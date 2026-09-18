@@ -16,3 +16,16 @@ npm test
 ```
 
 Nothing here is a mock. If the tests fail, the agent does not pay.
+
+## Paid on merge
+
+`.github/workflows/mergit.yml` runs the Mergit agent when a pull request is merged or
+its CI finishes. To claim a bounty, a pull request says which one in its description:
+
+```
+Bounty: #5
+```
+
+The payout goes to the author's wallet as registered in `mergit.json`. On payment the
+agent comments on the pull request with the amount, the evidence hash and the
+transaction on GIWA Sepolia.

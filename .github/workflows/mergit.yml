@@ -1,0 +1,46 @@
+name: Mergit
+
+# The merge pays. This workflow runs the Mergit agent whenever something is
+# merged into main or the CI workflow finishes, in whichever order those arrive.
+# The agent re-verifies from scratch every time and only pays once.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number to re-check
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+# One run at a time, so two events for the same merge cannot race to pay.
+concurrency:
+  group: mergit-settle
+  cancel-in-progress: false
+
+jobs:
+  settle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: odiseo159-beep/mergit
+          path: mergit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mergit/agent/package-lock.json
+      - run: npm ci
+        working-directory: mergit/agent
+      - run: node on-event.mjs
+        working-directory: mergit/agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGIT_AGENT_KEY: ${{ secrets.MERGIT_AGENT_KEY }}
