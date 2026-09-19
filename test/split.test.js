@@ -34,3 +34,9 @@ test("rejects a fee above the hard cap", () => {
 test("rejects a number where wei is expected", () => {
   assert.throws(() => split(1000, 150), TypeError);
 });
+
+test("a zero bounty pays nothing and charges nothing", () => {
+  const { payout, fee } = split(0n, 150);
+  assert.equal(payout, 0n);
+  assert.equal(fee, 0n);
+});
