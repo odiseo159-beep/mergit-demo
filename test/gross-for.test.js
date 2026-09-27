@@ -20,3 +20,12 @@ test("rounds up rather than leaving the developer a wei short", () => {
 test("rejects a fee above the hard cap", () => {
   assert.throws(() => grossFor(1_000n, MAX_FEE_BPS + 1), RangeError);
 });
+
+test("round trip: what a funder locks always leaves the developer whole", () => {
+  for (const net of [1n, 7n, 1_000n, 492_500_000_000_000n, 10n ** 18n]) {
+    for (const feeBps of [0, 1, 150, 499, MAX_FEE_BPS]) {
+      const { payout } = split(grossFor(net, feeBps), feeBps);
+      assert.ok(payout >= net, `${net} wei at ${feeBps} bps paid only ${payout}`);
+    }
+  }
+});
