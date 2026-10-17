@@ -17,6 +17,8 @@ on:
 
 permissions:
   contents: read
+  checks: read
+  statuses: read
   pull-requests: write
 
 # One run at a time, so two events for the same merge cannot race to pay.
@@ -31,6 +33,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: odiseo159-beep/mergit
+          # Pinned to a tag, not to main. Running the branch would let a
+          # merged pull request that touches agent/ become the code that
+          # signs the payments.
+          ref: v1.1
           path: mergit
       - uses: actions/setup-node@v4
         with:
