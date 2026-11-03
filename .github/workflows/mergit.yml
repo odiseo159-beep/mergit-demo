@@ -36,7 +36,7 @@ jobs:
           # Pinned to a tag, not to main. Running the branch would let a
           # merged pull request that touches agent/ become the code that
           # signs the payments.
-          ref: v1.4
+          ref: v1.5
           path: mergit
       - uses: actions/setup-node@v4
         with:
