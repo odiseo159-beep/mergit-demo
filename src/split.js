@@ -19,9 +19,15 @@ export function split(amount, feeBps) {
 }
 
 /**
- * Inverse of split: how much a funder must lock so the developer receives at
- * least `netTarget` after the protocol fee. Rounds up, because rounding down
- * would leave the developer a wei short of what the bounty advertised.
+ * Inverse of split: the smallest amount a funder must lock so the developer
+ * receives at least `netTarget` after the protocol fee.
+ *
+ * It is not simply `netTarget / (1 - fee)` rounded up. split rounds the fee
+ * down, in the developer's favour, so the payout of `g` is
+ * `ceil(g * (D - fee) / D)`, and the smallest `g` with a payout of at least
+ * `t` is `floor((t - 1) * D / (D - fee)) + 1`. Rounding the plain quotient up
+ * asked for one wei more than needed in most cases (1 wei net needed 2 at
+ * 1.5%, when 1 already pays 1).
  * @param {bigint} netTarget what the developer should receive, in wei
  * @param {number} feeBps protocol fee in basis points
  */
@@ -31,7 +37,7 @@ export function grossFor(netTarget, feeBps) {
   if (!Number.isInteger(feeBps) || feeBps < 0) throw new RangeError("feeBps must be a non-negative integer");
   if (feeBps > MAX_FEE_BPS) throw new RangeError("feeBps above the 5% cap");
 
-  const denominator = BigInt(BPS_DENOMINATOR - feeBps);
-  const numerator = netTarget * BigInt(BPS_DENOMINATOR);
-  return numerator % denominator === 0n ? numerator / denominator : numerator / denominator + 1n;
+  if (netTarget === 0n) return 0n;
+  const D = BigInt(BPS_DENOMINATOR);
+  return ((netTarget - 1n) * D) / (D - BigInt(feeBps)) + 1n;
 }
