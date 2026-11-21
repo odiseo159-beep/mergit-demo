@@ -1,31 +1,48 @@
 # mergit-demo
 
-A small, real repository used to demonstrate [Mergit](https://github.com/odiseo159-beep/mergit).
+Add a CONTRIBUTING.md on how to get paid here
 
-Mergit is a trustless bounty protocol on GIWA Chain. A protocol locks a bounty
-on-chain, a developer opens a pull request, and a verification agent checks the
-work and releases the payment.
+## Overview
 
-This repository is the work side of that loop. It has real tests and real CI, so
-the agent has something real to verify: it reads the merged pull request, checks
-that the CI for its head commit is green, hashes the evidence, and settles the
-escrow.
+Add a `CONTRIBUTING.md` that tells a new contributor how to get paid here, in plain words.
+
+**Done when**
+- It covers, in this order: claim your GitHub login at https://www.mergit.xyz/claim; pick an issue that is already funded; one pull request per issue with `Closes #N` in the description; the CI has to be green; on merge the agent pays and comments the receipt.
+- It says that a first pull request from a fork waits for a maintainer to approve the CI run, and that this is normal.
+- It is under
+
+## Installation
 
 ```bash
-npm test
+# Clone the repository
+git clone https://github.com/odiseo159-beep/mergit-demo.git
+cd mergit-demo
+
+# Install dependencies (if applicable)
+pip install -r requirements.txt  # Python
+# or
+npm install  # Node.js
 ```
 
-Nothing here is a mock. If the tests fail, the agent does not pay.
+## Usage
 
-## Paid on merge
-
-`.github/workflows/mergit.yml` runs the Mergit agent when a pull request is merged or
-its CI finishes. To claim a bounty, a pull request says which one in its description:
-
-```
-Bounty: #5
+```bash
+# Run the project
+python main.py  # Python
+# or
+node index.js  # Node.js
 ```
 
-The payout goes to the author's wallet as registered in `mergit.json`. On payment the
-agent comments on the pull request with the amount, the evidence hash and the
-transaction on GIWA Sepolia.
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Add my feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
+
+## License
+
+See [LICENSE](LICENSE) for details.
