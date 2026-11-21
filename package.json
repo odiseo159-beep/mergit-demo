@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Sample repository verified by the Mergit agent",
   "type": "module",
+  "exports": "./src/index.js",
   "scripts": {
     "test": "node --test"
   },
