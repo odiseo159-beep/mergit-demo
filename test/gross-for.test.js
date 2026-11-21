@@ -50,3 +50,21 @@ test("round trip: what a funder locks always leaves the developer whole", () => 
     }
   }
 });
+
+// New input validation tests
+
+test("throws TypeError when netTarget is not a bigint", () => {
+  assert.throws(() => grossFor(1_000, 150), TypeError);
+});
+
+test("throws RangeError when netTarget is negative", () => {
+  assert.throws(() => grossFor(-1n, 150), RangeError);
+});
+
+test("throws RangeError when fee is a non‑integer (1.5)", () => {
+  assert.throws(() => grossFor(1_000n, 1.5), RangeError);
+});
+
+test("throws RangeError when fee is negative", () => {
+  assert.throws(() => grossFor(1_000n, -10), RangeError);
+});
