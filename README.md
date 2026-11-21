@@ -29,3 +29,5 @@ Bounty: #5
 The payout goes to the author's wallet as registered in `mergit.json`. On payment the
 agent comments on the pull request with the amount, the evidence hash and the
 transaction on GIWA Sepolia.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get paid.
