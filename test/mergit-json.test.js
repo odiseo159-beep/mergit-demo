@@ -9,5 +9,5 @@ test('validateMergitJson', () => {
   assert.equal(validateMergitJson(null).length, 1);
   
   const p1 = validateMergitJson({ bad: 1, wallets: { "-bad": "0x123", "good": "bad-address" } });
-  assert.equal(p1.length, 3);
+  assert.equal(p1.length, 4);
 });
