@@ -36,10 +36,13 @@ test("rejects what is not a number or a bigint", () => {
   assert.throws(() => formatDeadline(null), TypeError);
   assert.throws(() => formatDeadline(undefined), TypeError);
   assert.throws(() => formatDeadline({}), TypeError);
+  assert.throws(() => formatDeadline(true), TypeError);
 });
 
 test("rejects a negative value or a number that is not whole", () => {
   assert.throws(() => formatDeadline(-1), RangeError);
   assert.throws(() => formatDeadline(-1n), RangeError);
   assert.throws(() => formatDeadline(1.5), RangeError);
+  assert.throws(() => formatDeadline(Number.NaN), RangeError);
+  assert.throws(() => formatDeadline(Infinity), RangeError);
 });
