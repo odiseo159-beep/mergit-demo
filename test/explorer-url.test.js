@@ -83,6 +83,17 @@ test("accepts a bigint block number", () => {
   );
 });
 
+test("prints large block numbers in full, not in exponent form", () => {
+  assert.equal(
+    explorerUrl("block", 1e21),
+    "https://sepolia-explorer.giwa.io/block/1000000000000000000000",
+  );
+  assert.equal(
+    explorerUrl("block", Number.MAX_SAFE_INTEGER),
+    "https://sepolia-explorer.giwa.io/block/9007199254740991",
+  );
+});
+
 test("rejects a block that is not a whole number >= 0", () => {
   for (const bad of [-1, -1n, 1.5, Number.NaN, Number.POSITIVE_INFINITY, "123", null, undefined]) {
     assert.throws(() => explorerUrl("block", bad), RangeError);

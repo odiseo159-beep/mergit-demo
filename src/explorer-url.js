@@ -30,7 +30,7 @@ export function explorerUrl(kind, value) {
     } else {
       throw new RangeError("block must be a whole number >= 0");
     }
-    return `${EXPLORER_BASE}/block/${value.toString()}`;
+    return `${EXPLORER_BASE}/block/${BigInt(value).toString()}`;
   }
   throw new TypeError(`unknown kind: ${kind}`);
 }
