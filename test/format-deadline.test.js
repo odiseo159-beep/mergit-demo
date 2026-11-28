@@ -46,3 +46,16 @@ test("rejects a negative value or a number that is not whole", () => {
   assert.throws(() => formatDeadline(Number.NaN), RangeError);
   assert.throws(() => formatDeadline(Infinity), RangeError);
 });
+
+test("handles the largest date JavaScript can represent", () => {
+  assert.equal(formatDeadline(8640000000000), "Sep 13, 275760, 00:00 UTC");
+  assert.equal(formatDeadline(8640000000000n), "Sep 13, 275760, 00:00 UTC");
+});
+
+test("rejects a timestamp past the largest representable date", () => {
+  assert.throws(() => formatDeadline(8640000000001), RangeError);
+  assert.throws(() => formatDeadline(8640000000001n), RangeError);
+  assert.throws(() => formatDeadline(Number.MAX_SAFE_INTEGER), RangeError);
+  assert.throws(() => formatDeadline(1e20), RangeError);
+  assert.throws(() => formatDeadline(2n ** 64n - 1n), RangeError);
+});
