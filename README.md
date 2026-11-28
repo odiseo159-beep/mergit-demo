@@ -17,6 +17,29 @@ npm test
 
 Nothing here is a mock. If the tests fail, the agent does not pay.
 
+## Library
+
+`src/split.js` is the payout maths, mirroring `MergitEscrow`. Amounts are wei
+as `bigint`, fees are basis points as a `number`.
+
+```js
+import { split, grossFor, MAX_FEE_BPS, BPS_DENOMINATOR } from "./src/index.js";
+
+// What the developer receives, and what the protocol keeps.
+split(500_000_000_000_000n, 150);
+// { payout: 492_500_000_000_000n, fee: 7_500_000_000_000n }
+
+// The smallest amount a funder must lock so the developer nets the target.
+grossFor(492_500_000_000_000n, 150);
+// 499_999_999_999_999n — split() of it pays exactly 492_500_000_000_000n
+```
+
+`grossFor` rounds up because `split` rounds the fee down, in the developer's
+favour, so the inverse has to round the other way to leave the developer whole.
+
+`MAX_FEE_BPS` is 500 and `BPS_DENOMINATOR` is 10 000: the fee is capped at 5%,
+in code, and no caller can raise it.
+
 ## Paid on merge
 
 `.github/workflows/mergit.yml` runs the Mergit agent when a pull request is merged or
